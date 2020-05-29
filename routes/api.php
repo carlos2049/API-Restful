@@ -17,3 +17,33 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+ 
+/*
+el metodo resource recibe un nombre, normalmente en plural
+despues recibe el controlador, si esta en carpeta debe ser incluido igual
+
+- el tercer parametro recibe un array con los filtros de los permisos 
+    que tiene los metodos de cada controlador
+only = solamente podran ocupar los qque esten en el array
+except = seran las excepciones que tendra el array 
+
+*/
+
+//buyers
+Route::resource('buyers', 'Buyer\BuyerController', ['only' => ['index', 'show']]);
+
+//categories
+Route::resource('categories', 'Category\CategoryController', ['except' => ['create', 'edit']]);
+
+//Products
+Route::resource('products', 'Product\ProductController', ['only' => ['index', 'show']]);
+
+// Transactions
+Route::resource('transactions', 'Transaction\TransactionController', ['only' => ['index', 'show']]);
+
+//sellers
+Route::resource('sellers', 'Seller\SellerController', ['only' => ['index', 'show']]);
+
+//Users
+Route::resource('users', 'User\UserController', ['except' => ['create', 'edit']]);
