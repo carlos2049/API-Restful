@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -15,6 +16,8 @@ class User extends Authenticatable
 
     const USUARIO_ADMINISTRADOR = 'true';
     const USUARIO_REGULAR = 'false';
+
+    protected $table = 'users';
 
 
     /**
@@ -56,8 +59,9 @@ class User extends Authenticatable
     public function esAdministrador(){
         return $this->admin == User::USUARIO_ADMINISTRADOR;
     }
-    public function generarVerificactionToken(){
-        return str_random(40);
+    public static function generarVerificationToken(){
+        return Str::random(40);
+
     }
 
 }
