@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Buyer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\User;
 
 class BuyerController extends Controller
 {
@@ -14,7 +15,9 @@ class BuyerController extends Controller
      */
     public function index()
     {
-        //
+        $user = User::all();
+        return response()->json(['data' => $user]);
+
     }
 
     /**
