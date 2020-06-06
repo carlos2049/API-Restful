@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $usuarios = User::all();
+        return response()->json(['data' => $usuarios], 200) ;
     }
 
     /**
@@ -22,10 +24,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +34,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $reglas = [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6|confirmed'
+        ];
+
+        $this->validate($request, $reglas);
+
+        $campos = $request->all();
+        $campos['password'] = bcrypt($request->password);
+        $campos['verificado'] = User::USUARIO_NO_VERIFICADO;
+        $campos['verification_token'] = User::generarVerificationToken();
+        $campos['admin'] = User::USUARIO_REGULAR;
+        $usuario = User::create($campos);
+
+        return response()->json(['data' => $usuario], 201);
     }
 
     /**
@@ -46,7 +60,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $usuarios = User::findOrFail($id);
+
+        return response()->json(['data'=> $usuarios], 200);
     }
 
     /**
@@ -55,10 +71,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+  
 
     /**
      * Update the specified resource in storage.
