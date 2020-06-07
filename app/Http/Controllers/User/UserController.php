@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\User;
 
 use App\User;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,22 +16,11 @@ class UserController extends Controller
     public function index()
     {
         $usuarios = User::all();
-        return response()->json(['data' => $usuarios], 200) ;
+      return $this->showAll($usuarios);
+      
+      // return response()->json(['data' => $usuarios], 200) ;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $reglas = [
@@ -47,39 +36,24 @@ class UserController extends Controller
         $campos['verificado'] = User::USUARIO_NO_VERIFICADO;
         $campos['verification_token'] = User::generarVerificationToken();
         $campos['admin'] = User::USUARIO_REGULAR;
+       
         $usuario = User::create($campos);
 
-        return response()->json(['data' => $usuario], 201);
+        return $this->showOne($usuario);
+        
+        //return response()->json(['data' => $usuario], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         $usuarios = User::findOrFail($id);
 
-        return response()->json(['data'=> $usuarios], 200);
+        return $this->showOne($usuarios);
+       // return response()->json(['data'=> $usuarios], 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-  
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+ 
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -118,7 +92,10 @@ class UserController extends Controller
         }
 
         $user->save();
-        return response()->json(['data' => $user], 200);
+      
+        return $this->showOne($user);
+      
+      //  return response()->json(['data' => $user], 200);
 
     }
 
@@ -132,6 +109,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return response()->json(['data' => $user], 200);
+       
+       return $this->showOne($user);
+       // return response()->json(['data' => $user], 200);
     }
 }
