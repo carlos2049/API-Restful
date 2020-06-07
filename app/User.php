@@ -34,11 +34,26 @@ class User extends Authenticatable
         'admin'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
+    public function setNameAttribute($valor){
+        $this->attributes['name'] = strtolower($valor);
+    }
+
+    public function getNameAttribute($valor){
+
+        //para postman
+        // devuelve la primera letra en mayuscula 
+       // return ucfirst($valor);
+        
+       //aqui cada palabra comienza en mayuscula 
+       return ucwords($valor);
+    }
+
+    public function setEmailAttribute($valor){
+        $this->attributes['email'] = strtolower($valor);
+    }
+
+    
+
     protected $hidden = [
         'password', 'remember_token','verification_token',
     ];
