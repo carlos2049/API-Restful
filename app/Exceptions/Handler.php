@@ -5,6 +5,11 @@ use App\Traits\ApiResponser;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\Access\AuthorizationException;
+
+
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -56,6 +61,21 @@ class Handler extends ExceptionHandler
         if($exception instanceof ValidationException ){
             return $this->convertValidationExceptionToResponse($exception, $request);
         }
+
+        if($exception instanceof ModelNotFoundException){
+            // obtenemos el modelo, despues lo acortamos y finalmente lo dejamos en minusculas
+            $modelo = strtolower(class_basename( $exception->getModel()));
+            return $this->errorResponse("no existe ninguna instancia de {$modelo} con el id especificado", 404);
+        }
+
+        if ($exception instanceof AuthenticationException) {
+            return $this->unauthenticated($request, $exception);
+        }
+
+        if($exception instanceof AuthorizationException){
+            return $this->errorResponse('no posee permisos para ejecutar esta accion', 403);
+        }
+
         return parent::render($request, $exception);
     }
       /**
