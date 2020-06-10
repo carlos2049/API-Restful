@@ -15,17 +15,14 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
-
             $table->unsignedBigInteger('quantity')->unsigned();
-
-            $table->timestamps();
-
             $table->unsignedBigInteger('buyer_id')->unsigned();
-
-            $table->foreign('buyer_id')->references('id')->on('users');
-
             $table->unsignedBigInteger('product_id')->unsigned();
-
+            
+            $table->timestamps();
+            $table->softDeletes();
+            
+            $table->foreign('buyer_id')->references('id')->on('users');
             $table->foreign('product_id')->references('id')->on('products');
         });
     }

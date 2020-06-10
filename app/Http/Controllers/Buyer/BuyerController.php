@@ -25,11 +25,11 @@ class BuyerController extends ApiController
     }
 
 
-    public function show($id)
+    public function show(Buyer $buyer)
     {
-        $comprador = Buyer::has('transactions')->findOrfail($id);
-        
-        return $this->showOne($comprador);
+     //   $comprador = Buyer::has('transactions')->findOrfail($id);
+        // ocupamos Scope de Scopes/BuyerScope
+        return $this->showOne($buyer);
         
         // return response()->json(['data' => $comprador], 200);
     }

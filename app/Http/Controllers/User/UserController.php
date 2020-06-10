@@ -44,19 +44,20 @@ class UserController extends ApiController
         //return response()->json(['data' => $usuario], 201);
     }
 
-
-    public function show($id)
+// estamos utilizando inyeccion de modelos y debe tener el mismo nombre
+    public function show(User $user)
     {
-        $usuarios = User::findOrFail($id);
+       // $usuarios = User::findOrFail($id);
 
-        return $this->showOne($usuarios);
+        return $this->showOne($user);
+       // return $this->showOne($usuario);
        // return response()->json(['data'=> $usuarios], 200);
     }
 
  
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        $user = User::findOrFail($id);
+       // $user = User::findOrFail($id);
 
         $reglas = [
             'email' => 'email|unique:users,email,' . $user->id ,
@@ -111,9 +112,9 @@ class UserController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user = User::findOrFail($id);
+      //  $user = User::findOrFail($id);
         $user->delete();
        
        return $this->showOne($user);
