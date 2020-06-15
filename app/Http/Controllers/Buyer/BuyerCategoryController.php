@@ -17,7 +17,8 @@ class BuyerCategoryController extends ApiController
     {
         //collapse se usa para unir varias listas, ya que sin ese metodo
         // estariamos recibiendo muchas listas de categorias
-        // con el unique y values se esta filtrando para que no se repitan 
+        // con el unique y values se esta filtrando para que no se repitan
+        //values() es para que no queden objetos vacios 
         $categories = $buyer->transactions()->with('product.categories')
         ->get()
         ->pluck('product.categories')

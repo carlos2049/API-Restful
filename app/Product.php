@@ -27,6 +27,10 @@ class Product extends Model
         'image',
         'seller_id',
     ];
+    //esto oculta la tabla pivot entre category y product
+    protected $hidden=[
+        'pivot'
+    ];
 
     public function estaDisponible(){
         return $this->status == Product::PRODUCTO_DISPONIBLE;
