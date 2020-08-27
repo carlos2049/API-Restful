@@ -15,6 +15,8 @@ class BuyerSellerController extends ApiController
      */
     public function index(Buyer $buyer)
     {
+        // with() aqui se une primero con producto y despues con seller de esa transaccion
+        // eb pluck primero ingresamos a producto y despues a seller
         $sellers = $buyer->transactions()->with('product.seller')
             ->get()
             ->pluck('product.seller')
